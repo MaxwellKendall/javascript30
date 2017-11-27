@@ -58,8 +58,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  const playSound = () => { console.log('lets play son')}
-  playSound();
+// add class of "playing" when you hit the key
+// play the sound on keydown
+// add class for a second then remove it
+// audio element .play does the sound
+// .currentTime sets the time
+// querySelector(element[attribute]) is the syntax for selecting via attribute
+// 'transitionend' event that tells us when an element was just transitioned / i.e., element says "I was just changed from border type x to border type y"
+    // -- fires everytime a single css property was transitioned; so applying a class may trigger thsi 10 times depending on how many properties
+  const playSound = (e) => {
+    const keyCode = e.keyCode;
+    document.querySelector(`.key[data-key='${keyCode}']`).classList.add('playing');
+    document.querySelector(`audio[data-key='${keyCode}']`).currentTime = 0;
+    document.querySelector(`audio[data-key='${keyCode}']`).play();
+  };
+  const removeTransition = (e) => {
+    if (e.propertyName ==! 'transform') return;
+    e.target.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  window.addEventListener("keydown", playSound);
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 </script>
 
 
